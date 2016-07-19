@@ -1,0 +1,28 @@
+version: '2'
+services:
+  mysql:
+    image: mysql:5.5.50
+    volumes:
+       - mysqldata:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: jiuyang1205
+    networks:
+      - backend
+    ports:
+      - 3306:3306
+  php:
+    image: php:5.6-cli-ext
+    volumes:
+      - /data/dockerfile/volume/config.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./KeleiDMS:/usr/src/myapp/KeleiDMS
+    depends_on:
+      - mysql
+    networks:
+      - backend
+      - my-load
+volumes: 
+  mysqldata: {}  
+networks:
+  backend:
+  my-load:
+    external: true
