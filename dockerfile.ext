@@ -1,5 +1,4 @@
 FROM php:5.6-cli
-COPY KeleiDMS /usr/src/myapp/KeleiDMS
 WORKDIR /usr/src/myapp/KeleiDMS
 RUN set -xe \
 # "构建依赖"
@@ -18,8 +17,8 @@ RUN set -xe \
         libpcre3-dev \
     " \
 # "安装 php 以及编译构建组件所需包"
-#    && groupadd www \
-#    && useradd -s /sbin/nologin -g www www \
+    && groupadd www \
+    && useradd -s /sbin/nologin -g www www \
     && apt-get update \
     && apt-get install -y ${buildDeps} --no-install-recommends \
     && pecl install swoole \
@@ -34,9 +33,9 @@ RUN set -xe \
     && cd ../.. \
     && rm -rf cphalcon \
  # 编译安装 swoole 
-    && git clone https://github.com/swoole/swoole-src.git \
+    && git clone -b 2.0.1 https://github.com/swoole/swoole-src.git \
     && cd swoole-src \
-    && phpize \
+    && phpize \ 
     && ./configure \
     && make && make install \
     && cd ../.. \
